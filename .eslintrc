@@ -13,5 +13,8 @@
   ],
   "parserOptions": {
     "project": "tsconfig.json"
+  },
+  "rules": {
+    "@shopify/binary-assignment-parens": 0
   }
 }
