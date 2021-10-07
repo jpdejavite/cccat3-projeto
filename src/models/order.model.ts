@@ -3,8 +3,9 @@ import InvalidCpf from '../errors/invalid-cpf.error';
 import CpfValidator from '../validators/cpf.validator';
 
 import Coupon from './coupon.model';
-import Item from './item.model';
 import OrderItem from './order-item.model';
+
+const MINIMUM_SHIPPING_COST = 10;
 
 class Order {
   public static makeOrder(clientCpf: string, items: OrderItem[], couponId?: string): Order {
@@ -37,6 +38,14 @@ class Order {
     return this.finalPrice;
   }
 
+  public getShippingCost(): number {
+    const shippingCost = this.items.reduce((sum, item) => {
+      return sum + item.getShippingCost();
+    }, 0);
+
+    return shippingCost < MINIMUM_SHIPPING_COST ? MINIMUM_SHIPPING_COST : shippingCost;
+  }
+
   private calculateFinalPrice(): void {
     if (this.couponId) {
       this.calculateFinalPriceWithDiscount();
@@ -55,5 +64,7 @@ class Order {
 
 }
 
-export default Order;
-
+export {
+  Order,
+  MINIMUM_SHIPPING_COST,
+};

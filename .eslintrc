@@ -16,6 +16,8 @@
   },
   "rules": {
     "@shopify/binary-assignment-parens": 0,
-    "@typescript-eslint/no-unnecessary-condition": "warn"
+    "@typescript-eslint/no-unnecessary-condition": "warn",
+    "babel/object-curly-spacing": "off",
+    "@typescript-eslint/object-curly-spacing": "off"
   }
 }

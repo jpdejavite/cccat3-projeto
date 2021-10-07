@@ -1,5 +1,7 @@
 import Item from './item.model';
 
+const DEFAULT_DISTANCE = 1000;
+
 class OrderItem {
   private readonly quantity: number;
   private readonly item: Item;
@@ -18,6 +20,11 @@ class OrderItem {
 
   public getFinalPrice(): number {
     return this.finalPrice;
+  }
+
+
+  public getShippingCost(): number {
+    return this.quantity * DEFAULT_DISTANCE * this.item.dimensions.getVolume() * this.item.getDensity() / 100;
   }
 }
 
