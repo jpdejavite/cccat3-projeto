@@ -4,9 +4,10 @@ import CouponValidator from '../validators/coupon.validator';
 import CpfValidator from '../validators/cpf.validator';
 
 import Item from './item.model';
+import OrderItem from './order-item.model';
 
 class Order {
-  public static makeOrder(clientCpf: string, items: Item[], couponId?: string): Order {
+  public static makeOrder(clientCpf: string, items: OrderItem[], couponId?: string): Order {
     if (!CpfValidator.validate(clientCpf)) {
       throw new InvalidCpf();
     }
@@ -21,11 +22,11 @@ class Order {
 
 
   private readonly clientCpf: string;
-  private readonly items: Item[];
+  private readonly items: OrderItem[];
   private readonly couponId?: string;
   private finalPrice: number;
 
-  private constructor(clientCpf: string, items: Item[], couponId?: string) {
+  private constructor(clientCpf: string, items: OrderItem[], couponId?: string) {
     this.clientCpf = clientCpf;
     this.items = items;
     this.couponId = couponId;
