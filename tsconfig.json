@@ -9,8 +9,9 @@
   },
   "include": [
     "./src",
-    "__tests__"
-, "coverage"  ],
+    "__tests__",
+    "coverage"
+  ],
   "exclude": [
     "./node_modules"
   ]

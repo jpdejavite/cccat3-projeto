@@ -1,8 +1,8 @@
 import EmptyItems from '../errors/empty-items.error';
 import InvalidCpf from '../errors/invalid-cpf.error';
-import CouponValidator from '../validators/coupon.validator';
 import CpfValidator from '../validators/cpf.validator';
 
+import Coupon from './coupon.model';
 import Item from './item.model';
 import OrderItem from './order-item.model';
 
@@ -46,7 +46,7 @@ class Order {
   }
 
   private calculateFinalPriceWithDiscount(): void {
-    const discount = CouponValidator.calculateDiscount(this.couponId!);
+    const discount = new Coupon(this.couponId!).calculateDiscount();
     this.finalPrice = this.items.reduce((sum, item) => {
       item.applyDiscount(discount);
       return sum + item.getFinalPrice();

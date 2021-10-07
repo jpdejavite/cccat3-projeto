@@ -15,6 +15,7 @@
     "project": "tsconfig.json"
   },
   "rules": {
-    "@shopify/binary-assignment-parens": 0
+    "@shopify/binary-assignment-parens": 0,
+    "@typescript-eslint/no-unnecessary-condition": "warn"
   }
 }
