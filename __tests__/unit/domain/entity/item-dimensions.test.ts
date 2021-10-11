@@ -1,4 +1,4 @@
-import ItemDimensions from '../../src/models/item-dimensions.model';
+import ItemDimensions from '../../../../src/domain/entity/item-dimensions';
 
 test('Should calculate volume correctly in m3 (1)', () => {
   const itemDimension = new ItemDimensions(0.20, 0.15, 0.10);

@@ -2,8 +2,8 @@ import EmptyItems from '../errors/empty-items.error';
 import InvalidCpf from '../errors/invalid-cpf.error';
 import CpfValidator from '../validators/cpf.validator';
 
-import Coupon from './coupon.model';
-import OrderItem from './order-item.model';
+import Coupon from './coupon';
+import OrderItem from './order-item';
 
 const MINIMUM_SHIPPING_COST = 10;
 

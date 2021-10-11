@@ -1,4 +1,4 @@
-import Item from './item.model';
+import Item from './item';
 
 const DEFAULT_DISTANCE = 1000;
 

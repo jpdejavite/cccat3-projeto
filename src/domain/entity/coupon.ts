@@ -1,7 +1,7 @@
 import ExpiredCoupon from '../errors/expired-coupon.error';
 import InvalidCoupon from '../errors/invalid-coupon.error';
 
-import CouponData from './coupon-data.model';
+import CouponData from './coupon-data';
 
 const VALID_COUPON_EXPIRATION_TIME = 10000;
 

@@ -1,4 +1,4 @@
-import CpfValidator from '../../src/validators/cpf.validator';
+import CpfValidator from '../../../../src/domain/validators/cpf.validator';
 
 
 test('CPF "" should be invalid', () => {

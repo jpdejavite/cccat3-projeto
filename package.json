@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/jpdejavite/cccate-projeto#readme",
   "dependencies": {
+    "pg-promise": "^10.11.0",
     "typescript": "^4.4.3"
   },
   "devDependencies": {
