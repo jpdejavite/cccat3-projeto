@@ -1,5 +1,6 @@
 import Item from '../../../domain/entity/item';
 import ItemDimensions from '../../../domain/entity/item-dimensions';
+import EmptyItems from '../../../domain/errors/empty-items.error';
 import ItemRepository from '../../../domain/repository/item-repository';
 
 export default class ItemRepositoryMemory implements ItemRepository {

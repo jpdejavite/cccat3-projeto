@@ -1,62 +1,56 @@
 import EmptyItems from '../errors/empty-items.error';
+import ExpiredCoupon from '../errors/expired-coupon.error';
 import InvalidCpf from '../errors/invalid-cpf.error';
 import CpfValidator from '../validators/cpf.validator';
 
 import Coupon from './coupon';
+import Item from './item';
 import OrderItem from './order-item';
 
 const MINIMUM_SHIPPING_COST = 10;
 
 class Order {
-  public static makeOrder(clientCpf: string, items: OrderItem[], couponId?: string): Order {
+  private readonly clientCpf: string;
+  private readonly orderItems: OrderItem[];
+  private coupon?: Coupon;
+
+  constructor(clientCpf: string, readonly issueDate: Date = new Date()) {
     if (!CpfValidator.validate(clientCpf)) {
       throw new InvalidCpf();
     }
-
-    if (items.length === 0) {
-      throw new EmptyItems();
-    }
-    const order = new Order(clientCpf, items, couponId);
-    order.calculateFinalPrice();
-    return order;
-  }
-
-
-  private readonly clientCpf: string;
-  private readonly items: OrderItem[];
-  private readonly couponId?: string;
-  private finalPrice: number;
-
-  private constructor(clientCpf: string, items: OrderItem[], couponId?: string) {
     this.clientCpf = clientCpf;
-    this.items = items;
-    this.couponId = couponId;
-    this.finalPrice = 0;
+    this.orderItems = [];
   }
 
-  public getFinalPrice(): number {
-    return this.finalPrice;
+  public addItem(item: Item, quantity: number): void {
+    this.orderItems.push(new OrderItem(item, quantity));
   }
 
   public getShippingCost(): number {
-    const shippingCost = this.items.reduce((sum, item) => {
+    const shippingCost = this.orderItems.reduce((sum, item) => {
       return sum + item.getShippingCost();
     }, 0);
 
     return shippingCost < MINIMUM_SHIPPING_COST ? MINIMUM_SHIPPING_COST : shippingCost;
   }
 
-  private calculateFinalPrice(): void {
-    if (this.couponId) {
-      this.calculateFinalPriceWithDiscount();
-      return;
+  public addCoupon(coupon: Coupon): void {
+    if (coupon.isExpired(this.issueDate)) {
+      throw new ExpiredCoupon();
     }
-    this.finalPrice = this.items.reduce((sum, item) => sum + item.getFinalPrice(), 0);
+    this.coupon = coupon;
   }
 
-  private calculateFinalPriceWithDiscount(): void {
-    const discount = new Coupon(this.couponId!).calculateDiscount();
-    this.finalPrice = this.items.reduce((sum, item) => {
+  public getTotal(): number {
+    if (this.coupon) {
+      return this.calculateFinalPriceWithDiscount();
+    }
+    return this.orderItems.reduce((sum, item) => sum + item.getFinalPrice(), 0);
+  }
+
+  private calculateFinalPriceWithDiscount(): number {
+    const discount = this.coupon!.discountAmount;
+    return this.orderItems.reduce((sum, item) => {
       item.applyDiscount(discount);
       return sum + item.getFinalPrice();
     }, 0);

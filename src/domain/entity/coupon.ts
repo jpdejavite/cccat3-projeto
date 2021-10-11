@@ -16,28 +16,23 @@ interface CouponMap {
 
 
 class Coupon {
-  private static isExpired(expirationDate: Date): boolean {
-    return expirationDate.getTime() < new Date().getTime();
-  }
+  public readonly discountAmount: number;
+  public readonly expirationDate: Date;
 
-  private readonly id: string;
 
-  public constructor(id: string) {
-    this.id = id;
-  }
-
-  calculateDiscount(): number {
+  public constructor(readonly id: string) {
     const couponData = validCouponDatas[this.id];
 
     if (!couponData) {
       throw new InvalidCoupon();
     }
 
-    if (Coupon.isExpired(couponData.expirationDate)) {
-      throw new ExpiredCoupon();
-    }
+    this.discountAmount = couponData.discountAmount;
+    this.expirationDate = couponData.expirationDate;
+  }
 
-    return couponData.discountAmount;
+  public isExpired(today: Date): boolean {
+    return this.expirationDate.getTime() < today.getTime();
   }
 }
 
