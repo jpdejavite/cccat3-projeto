@@ -1,8 +1,5 @@
 import Item from '../../../../src/domain/entity/item';
 import InvalidCpf from '../../../../src/domain/errors/invalid-cpf.error';
-import EmptyItems from '../../../../src/domain/errors/empty-items.error';
-import InvalidCoupon from '../../../../src/domain/errors/invalid-coupon.error';
-import OrderItem from '../../../../src/domain/entity/order-item';
 import ExpiredCoupon from '../../../../src/domain/errors/expired-coupon.error';
 import ItemDimensions from '../../../../src/domain/entity/item-dimensions';
 import { Order, MINIMUM_SHIPPING_COST } from '../../../../src/domain/entity/order';
@@ -66,5 +63,12 @@ test('Should calulate order minimum shipping cost', () => {
   const order = new Order(cpf);
   order.addItem(new Item('1', 'item 1', 10, item1Dimension, 1), 1);
   expect(order.getShippingCost()).toBe(MINIMUM_SHIPPING_COST);
+});
+
+test('Should calulate order minimum shipping cost', () => {
+  const cpf = '93541134780';
+  const order = new Order(cpf, new Date('2021-10-11T01:46:18.592Z'));
+  order.generateOrderCode(1);
+  expect(order.getOrderCode()).toBe('202100000001');
 });
 

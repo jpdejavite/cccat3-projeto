@@ -23,6 +23,7 @@ test('Must place an order', async () => {
   const placeOrder = new PlaceOrder(new ItemRepositoryMemory(), new OrderRepositoryMemory());
   const output = await placeOrder.execute(input);
   expect(output.total).toBe(6090);
+  expect(output.orderCode).toBeDefined();
 });
 
 
@@ -46,5 +47,5 @@ test('Must throw error when item is not foundplace an order', async () => {
   };
   const placeOrder = new PlaceOrder(new ItemRepositoryMemory(), new OrderRepositoryMemory());
 
-  expect(placeOrder.execute(input)).rejects.toThrow(new Error('Item not found'));
+  await expect(placeOrder.execute(input)).rejects.toThrow(new Error('Item not found'));
 });
