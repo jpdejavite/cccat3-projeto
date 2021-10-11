@@ -7,7 +7,7 @@ import Coupon from '../../../../src/domain/entity/coupon';
 
 const faketemDimension = new ItemDimensions(0.20, 0.15, 0.10);
 const fakeWeight = 1;
-
+const VALID_COUPON_EXPIRATION_TIME = 10000;
 
 test('Should not create order with invalid CPF', () => {
   const cpf = '111.111.111-11';
@@ -18,10 +18,10 @@ test('Should not create order with invalid CPF', () => {
 
 test('Should not add coupon to order with expired coupon', () => {
   const cpf = '93541134780';
-  const couponId = '50-expired-discount-coupon-id';
+  const coupon = new Coupon('50-discount-coupon-id', new Date(Date.now() - VALID_COUPON_EXPIRATION_TIME), 0.50);
   expect(() => {
     const order = new Order(cpf);
-    order.addCoupon(new Coupon(couponId));
+    order.addCoupon(coupon);
   }).toThrow(new ExpiredCoupon());
 });
 
@@ -35,12 +35,13 @@ test('Should create order with final price', () => {
 
 test('Should create order applying discount in final price', () => {
   const cpf = '93541134780';
-  const couponId = '50-discount-coupon-id';
+  const coupon = new Coupon('50-discount-coupon-id', new Date(Date.now() + VALID_COUPON_EXPIRATION_TIME), 0.50);
+
 
   const order = new Order(cpf);
   order.addItem(new Item('1', 'item 1', 10, faketemDimension, fakeWeight), 10);
   order.addItem(new Item('1', 'item 2', 5, faketemDimension, fakeWeight), 10);
-  order.addCoupon(new Coupon(couponId));
+  order.addCoupon(coupon);
   expect(order.getTotal()).toBe(75);
 });
 

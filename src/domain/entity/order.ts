@@ -67,7 +67,7 @@ class Order {
   }
 
   private calculateFinalPriceWithDiscount(): number {
-    const discount = this.coupon!.discountAmount;
+    const discount = this.coupon!.discountPercentage;
     return this.orderItems.reduce((sum, item) => {
       item.applyDiscount(discount);
       return sum + item.getFinalPrice();
