@@ -14,7 +14,7 @@ export default class CouponRepositoryMemory implements CouponRepository {
     ];
   }
 
-  findById(id: string): Promise<Coupon> {
+  async findById(id: string): Promise<Coupon> {
     const coupon = this.coupons.find((coupons) => coupons.id === id);
     if (!coupon) {
       throw new InvalidCoupon();
