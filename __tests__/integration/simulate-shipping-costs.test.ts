@@ -3,14 +3,11 @@ import ItemRepository from '../../src/domain/repository/item-repository';
 import DatabaseConnection from '../../src/infra/database/database-connection';
 import DatabaseConnectionAdapter from '../../src/infra/database/database-connection-adapter';
 import ItemRepositoryDatabase from '../../src/infra/repository/database/item-repository-database';
-import ItemRepositoryMemory from '../../src/infra/repository/memory/item-repository-memory';
-
 
 import constants from './constants';
 
 let itemRepository: ItemRepository;
 let databaseConnection: DatabaseConnection;
-
 
 beforeAll(() => {
   databaseConnection = new DatabaseConnectionAdapter(constants.POSTGRES_URL);

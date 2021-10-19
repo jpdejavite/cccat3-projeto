@@ -15,12 +15,12 @@ export default class PlaceOrder {
       const item = await this.itemRepository.findById(orderItem.idItem);
       order.addItem(item, orderItem.quantity);
     }
-    const nextUniqueSequentialId = this.orderRepository.getNextUniqueSequentialId();
-    order.generateOrderCode(nextUniqueSequentialId);
-    this.orderRepository.save(order);
+    const nextUniqueSequentialId = await this.orderRepository.getNextUniqueSequentialId();
+    order.generateCode(nextUniqueSequentialId);
+    await this.orderRepository.save(order);
     return new PlaceOrderOutput(
       order.getTotal(),
-      order.getOrderCode(),
+      order.getCode(),
     );
   }
 }

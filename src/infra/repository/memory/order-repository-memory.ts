@@ -8,11 +8,12 @@ export default class OrderRepositoryMemory implements OrderRepository {
     this.orders = [];
   }
 
-  save(order: Order): void {
+  save(order: Order): Promise<void> {
     this.orders.push(order);
+    return Promise.resolve();
   }
 
-  getNextUniqueSequentialId(): number {
-    return this.orders.length + 1;
+  getNextUniqueSequentialId(): Promise<number> {
+    return Promise.resolve(this.orders.length + 1);
   }
 }

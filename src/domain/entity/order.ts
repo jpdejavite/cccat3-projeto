@@ -1,4 +1,3 @@
-import EmptyItems from '../errors/empty-items.error';
 import ExpiredCoupon from '../errors/expired-coupon.error';
 import InvalidCpf from '../errors/invalid-cpf.error';
 import CpfValidator from '../validators/cpf.validator';
@@ -12,10 +11,10 @@ const MINIMUM_SHIPPING_COST = 10;
 const UNIQUE_SEQUENTIAL_ID_MAX_SIZE = 8;
 
 class Order {
-  private readonly clientCpf: string;
-  private readonly orderItems: OrderItem[];
+  public readonly clientCpf: string;
+  public readonly orderItems: OrderItem[];
   private coupon?: Coupon;
-  private orderCode: string;
+  private code: string;
 
   constructor(clientCpf: string, readonly issueDate: Date = new Date()) {
     if (!CpfValidator.validate(clientCpf)) {
@@ -23,7 +22,7 @@ class Order {
     }
     this.clientCpf = clientCpf;
     this.orderItems = [];
-    this.orderCode = '';
+    this.code = '';
   }
 
   public addItem(item: Item, quantity: number): void {
@@ -53,12 +52,12 @@ class Order {
   }
 
 
-  public generateOrderCode(uniqueSequentialId: number): void {
-    this.orderCode = `${this.issueDate.getFullYear()}${this.padWithZeros(uniqueSequentialId, UNIQUE_SEQUENTIAL_ID_MAX_SIZE)}`;
+  public generateCode(uniqueSequentialId: number): void {
+    this.code = `${this.issueDate.getFullYear()}${this.padWithZeros(uniqueSequentialId, UNIQUE_SEQUENTIAL_ID_MAX_SIZE)}`;
   }
 
-  public getOrderCode(): string {
-    return this.orderCode;
+  public getCode(): string {
+    return this.code;
   }
 
   private padWithZeros(num: number, size: number): string {

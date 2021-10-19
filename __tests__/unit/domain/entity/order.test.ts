@@ -69,7 +69,7 @@ test('Should calulate order minimum shipping cost', () => {
 test('Should calulate order minimum shipping cost', () => {
   const cpf = '93541134780';
   const order = new Order(cpf, new Date('2021-10-11T01:46:18.592Z'));
-  order.generateOrderCode(1);
-  expect(order.getOrderCode()).toBe('202100000001');
+  order.generateCode(1);
+  expect(order.getCode()).toBe('202100000001');
 });
 

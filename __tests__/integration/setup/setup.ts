@@ -4,6 +4,7 @@ import constants from '../constants';
 
 import setupCouponData from './setup-coupon';
 import setupItemData from './setup-item';
+import setupOrderData from './setup-order';
 
 const setup = async (): Promise<void> => {
   const pg = pgp()(constants.POSTGRES_URL);
@@ -15,6 +16,8 @@ const setup = async (): Promise<void> => {
   await setupCouponData(pg);
 
   await setupItemData(pg);
+
+  await setupOrderData(pg);
 
   // END CONNECTION
   await pg.$pool.end();

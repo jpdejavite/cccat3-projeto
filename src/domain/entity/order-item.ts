@@ -3,8 +3,8 @@ import Item from './item';
 const DEFAULT_DISTANCE = 1000;
 
 class OrderItem {
-  private readonly quantity: number;
-  private readonly item: Item;
+  public readonly item: Item;
+  public readonly quantity: number;
   private finalPrice: number;
 
 

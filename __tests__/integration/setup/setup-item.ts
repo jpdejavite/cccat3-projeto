@@ -7,7 +7,6 @@ const addItem = async (pg: any, item: Item): Promise<void> => {
 };
 
 const setupItemData = async (pg: any): Promise<void> => {
-  // COUPON TABLE
   await pg.query('DROP TABLE IF EXISTS item');
   await pg.query('CREATE TABLE item (id INTEGER PRIMARY KEY, description TEXT, price NUMERIC(10,2), height NUMERIC(10,2), width NUMERIC(10,2), depth NUMERIC(10,2), weight NUMERIC(10,2))');
 
