@@ -1,12 +1,11 @@
 import { Order } from '../../domain/entity/order';
 import ItemRepository from '../../domain/repository/item-repository';
-import OrderRepository from '../../domain/repository/order-repository';
 import PlaceOrderInput from '../dto/input/place-order-input';
 import SimulateShippingCostsOutput from '../dto/output/simulate-shipping-costs-output';
 
 export default class SimulateShippingCosts {
 
-  constructor(readonly itemRepository: ItemRepository, readonly orderRepository: OrderRepository) {
+  constructor(readonly itemRepository: ItemRepository) {
   }
 
   async execute(input: PlaceOrderInput): Promise<SimulateShippingCostsOutput> {

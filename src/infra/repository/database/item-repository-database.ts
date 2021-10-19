@@ -9,9 +9,15 @@ export default class ItemRepositoryDatabase implements ItemRepository {
   }
 
   async findById(idItem: string): Promise<Item> {
-    const [itemData] = await this.databaseConnection.query('select * from ccca.item where id = $1', [idItem]);
-    // FIX THIS LATTER
-    const item = new Item(itemData.id, itemData.description, parseFloat(itemData.price), new ItemDimensions(1, 0.3, 0.10), 1);
+    const [itemData] = await this.databaseConnection.query('select * from item where id = $1', [idItem]);
+
+    if (!itemData) {
+      throw new Error('Item not found');
+    }
+
+    const itemDimensions = new ItemDimensions(parseFloat(itemData.height), parseFloat(itemData.width), parseFloat(itemData.depth));
+
+    const item = new Item(itemData.id, itemData.description, parseFloat(itemData.price), itemDimensions, parseFloat(itemData.weight));
     return item;
   }
 }

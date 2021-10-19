@@ -1,8 +1,8 @@
 class ItemDimensions {
   // all dimensions are in m3
-  private readonly height: number;
-  private readonly width: number;
-  private readonly depth: number;
+  public readonly height: number;
+  public readonly width: number;
+  public readonly depth: number;
 
   public constructor(height: number, width: number, depth: number) {
     this.height = height;
