@@ -9,11 +9,11 @@ export default class OrderRepositoryDatabase implements OrderRepository {
 
   async save(order: Order): Promise<void> {
     await this.databaseConnection.query(`INSERT INTO "order" (code, client_cpf, total, created_at) VALUES ($1, $2, $3, $4)`,
-      [order.getCode(), order.clientCpf, order.getTotal(), order.issueDate]);
+      [order.getCode(), order.getClientCpf(), order.getTotal(), order.issueDate]);
 
     const [{ id }] = await this.databaseConnection.query('select id from "order" where code = $1', [order.getCode()]);
 
-    for (const orderItem of order.orderItems) {
+    for (const orderItem of order.getOrderItems()) {
       await this.databaseConnection.query(`INSERT INTO order_item (order_id, quantity, final_price, item_id) VALUES ($1, $2, $3, $4)`,
         [id, orderItem.quantity, orderItem.getFinalPrice(), orderItem.item.id]);
     }

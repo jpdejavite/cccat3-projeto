@@ -1,8 +1,8 @@
 import ExpiredCoupon from '../errors/expired-coupon.error';
 import InvalidCpf from '../errors/invalid-cpf.error';
-import CpfValidator from '../validators/cpf.validator';
 
 import Coupon from './coupon';
+import Cpf from './cpf';
 import Item from './item';
 import OrderItem from './order-item';
 
@@ -11,16 +11,13 @@ const MINIMUM_SHIPPING_COST = 10;
 const UNIQUE_SEQUENTIAL_ID_MAX_SIZE = 8;
 
 class Order {
-  public readonly clientCpf: string;
-  public readonly orderItems: OrderItem[];
+  private readonly clientCpf: Cpf;
+  private readonly orderItems: OrderItem[];
   private coupon?: Coupon;
   private code: string;
 
   constructor(clientCpf: string, readonly issueDate: Date = new Date()) {
-    if (!CpfValidator.validate(clientCpf)) {
-      throw new InvalidCpf();
-    }
-    this.clientCpf = clientCpf;
+    this.clientCpf = new Cpf(clientCpf);
     this.orderItems = [];
     this.code = '';
   }
@@ -58,6 +55,14 @@ class Order {
 
   public getCode(): string {
     return this.code;
+  }
+
+  public getClientCpf(): string {
+    return this.clientCpf.getValue();
+  }
+
+  public getOrderItems(): OrderItem[] {
+    return this.orderItems;
   }
 
   private padWithZeros(num: number, size: number): string {

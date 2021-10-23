@@ -1,3 +1,5 @@
+import InvalidCpf from '../errors/invalid-cpf.error';
+
 const CPF_LENGTH = 11;
 const CPF_SIZE_WITH_MASK = 14;
 const DIGIT_1_BASE_MULTIPLIER = 10;
@@ -50,22 +52,33 @@ const isLengthValid = (rawString: string): boolean => {
   return rawString.length === CPF_LENGTH || rawString.length === CPF_SIZE_WITH_MASK;
 };
 
-const CpfValidator = {
-  validate(rawString: string): boolean {
-    if (!isLengthValid(rawString)) {
-      return false;
-    }
+const validate = (rawString: string): boolean => {
+  if (!isLengthValid(rawString)) {
+    return false;
+  }
 
-    const onlyNumberString = removeMask(rawString);
+  const onlyNumberString = removeMask(rawString);
 
-    if (areAllDigitsRepeated(onlyNumberString)) {
-      return false;
-    }
+  if (areAllDigitsRepeated(onlyNumberString)) {
+    return false;
+  }
 
-    const calculatedVerificationDigits = calculateVerificationDigits(onlyNumberString);
-    const verificationDigits = onlyNumberString.substring(onlyNumberString.length - 2, onlyNumberString.length);
-    return verificationDigits === calculatedVerificationDigits;
-  },
+  const calculatedVerificationDigits = calculateVerificationDigits(onlyNumberString);
+  const verificationDigits = onlyNumberString.substring(onlyNumberString.length - 2, onlyNumberString.length);
+  return verificationDigits === calculatedVerificationDigits;
 };
 
-export default CpfValidator;
+
+class Cpf {
+  constructor(private readonly cpf: string) {
+    if (!validate(cpf)) {
+      throw new InvalidCpf();
+    }
+  }
+
+  public getValue(): string {
+    return this.cpf;
+  }
+}
+
+export default Cpf;
