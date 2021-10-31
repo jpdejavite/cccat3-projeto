@@ -1,14 +1,17 @@
 import { Order } from '../../domain/entity/order';
+import AbstractRepositoryFactory from '../../domain/factory/abstract-repository-factory';
 import ItemRepository from '../../domain/repository/item-repository';
-import PlaceOrderInput from '../dto/input/place-order-input';
+import SimulateShippingCostsInput from '../dto/input/simulate-shipping-costs-input';
 import SimulateShippingCostsOutput from '../dto/output/simulate-shipping-costs-output';
 
 export default class SimulateShippingCosts {
+  readonly itemRepository: ItemRepository;
 
-  constructor(readonly itemRepository: ItemRepository) {
+  constructor(abstractRepositoryFactory: AbstractRepositoryFactory) {
+    this.itemRepository = abstractRepositoryFactory.createItemRepository();
   }
 
-  async execute(input: PlaceOrderInput): Promise<SimulateShippingCostsOutput> {
+  async execute(input: SimulateShippingCostsInput): Promise<SimulateShippingCostsOutput> {
     const order = new Order(input.cpf);
     for (const orderItem of input.orderItems) {
       const item = await this.itemRepository.findById(orderItem.idItem);

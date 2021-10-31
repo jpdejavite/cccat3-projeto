@@ -1,4 +1,6 @@
-import SimulateShippingCosts from '../../src/application/usecase/simulate-shipping-costs';
+import axios from 'axios';
+import HttpStatus from 'http-status-codes';
+
 import ItemRepository from '../../src/domain/repository/item-repository';
 import DatabaseConnection from '../../src/infra/database/database-connection';
 import DatabaseConnectionAdapter from '../../src/infra/database/database-connection-adapter';
@@ -36,9 +38,10 @@ test('Must simulate a shipping cost', async () => {
       },
     ],
   };
-  const simulateShippingCosts = new SimulateShippingCosts(itemRepository);
-  const output = await simulateShippingCosts.execute(input);
-  expect(output.shippingCost).toBe(499.98);
+  const output = await axios.get(`${constants.API_URL}/shipping/simulate`, { data: input });
+
+  expect(output.status).toBe(HttpStatus.OK);
+  expect(output.data.shippingCost).toBe(499.98);
 });
 
 
@@ -60,7 +63,13 @@ test('Must throw error when a shipping cost is calulated with a non existing ite
       },
     ],
   };
-  const simulateShippingCosts = new SimulateShippingCosts(itemRepository);
-  await expect(simulateShippingCosts.execute(input)).rejects.toThrow(new Error('Item not found'));
+  try {
+    await axios.get(`${constants.API_URL}/shipping/simulate`, { data: input });
+  } catch (err) {
+    expect(err).toHaveProperty('response');
+    const response = (err as any).response;
+    expect(response.status).toBe(HttpStatus.INTERNAL_SERVER_ERROR);
+    expect(response.data).toBe('Item not found');
+  }
 });
 

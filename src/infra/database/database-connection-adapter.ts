@@ -15,7 +15,7 @@ export default class DatabaseConnectionAdapter implements DatabaseConnection {
     this.pgp = DatabaseConnectionAdapter.pgpMap.get(connectionUrl);
   }
 
-  query(statement: string, params: any) {
+  query(statement: string, params: any): Promise<any> {
     return this.pgp.query(statement, params);
   }
 
