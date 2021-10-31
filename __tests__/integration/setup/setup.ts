@@ -6,6 +6,7 @@ import setupCouponData from './setup-coupon';
 import setupItemData from './setup-item';
 import setupOrderData from './setup-order';
 
+
 const setup = async (): Promise<void> => {
   const pg = pgp()(constants.POSTGRES_URL);
 

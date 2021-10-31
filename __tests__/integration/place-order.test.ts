@@ -1,12 +1,12 @@
-import PlaceOrder from '../../src/application/usecase/place-order';
+import axios from 'axios';
+import HttpStatus from 'http-status-codes';
+
 import ItemRepository from '../../src/domain/repository/item-repository';
 import OrderRepository from '../../src/domain/repository/order-repository';
 import DatabaseConnection from '../../src/infra/database/database-connection';
 import DatabaseConnectionAdapter from '../../src/infra/database/database-connection-adapter';
 import ItemRepositoryDatabase from '../../src/infra/repository/database/item-repository-database';
 import OrderRepositoryDatabase from '../../src/infra/repository/database/order-repository-database';
-import ItemRepositoryMemory from '../../src/infra/repository/memory/item-repository-memory';
-import OrderRepositoryMemory from '../../src/infra/repository/memory/order-repository-memory';
 
 import constants from './constants';
 
@@ -43,10 +43,12 @@ test('Must place an order', async () => {
       },
     ],
   };
-  const placeOrder = new PlaceOrder(itemRepository, orderRepository);
-  const output = await placeOrder.execute(input);
-  expect(output.total).toBe(6090);
-  expect(output.orderCode).toBeDefined();
+
+  const output = await axios.post(`${constants.API_URL}/order/`, input);
+
+  expect(output.status).toBe(HttpStatus.CREATED);
+  expect(output.data.total).toBe(6090);
+  expect(output.data.orderCode).toBeDefined();
 });
 
 
@@ -68,7 +70,12 @@ test('Must throw error when item is not foundplace an order', async () => {
       },
     ],
   };
-  const placeOrder = new PlaceOrder(itemRepository, orderRepository);
-
-  await expect(placeOrder.execute(input)).rejects.toThrow(new Error('Item not found'));
+  try {
+    await axios.post(`${constants.API_URL}/order/`, input);
+  } catch (err) {
+    expect(err).toHaveProperty('response');
+    const response = (err as any).response;
+    expect(response.status).toBe(HttpStatus.INTERNAL_SERVER_ERROR);
+    expect(response.data).toBe('Item not found');
+  }
 });

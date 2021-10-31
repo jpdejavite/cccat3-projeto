@@ -20,6 +20,7 @@
     "babel/object-curly-spacing": "off",
     "@typescript-eslint/object-curly-spacing": "off",
     "babel/semi": "off",
+    "no-process-env": "off",
     "import/no-anonymous-default-export": [
       2,
       {
