@@ -3,25 +3,9 @@ import HttpStatus from 'http-status-codes';
 
 import ExpiredCoupon from '../../src/domain/errors/expired-coupon.error';
 import InvalidCoupon from '../../src/domain/errors/invalid-coupon.error';
-import CouponRepository from '../../src/domain/repository/coupon-repository';
-import DatabaseConnection from '../../src/infra/database/database-connection';
-import DatabaseConnectionAdapter from '../../src/infra/database/database-connection-adapter';
-import CouponRepositoryDatabase from '../../src/infra/repository/database/coupon-repository-database';
 
 import constants from './constants';
 
-let couponRepository: CouponRepository;
-let databaseConnection: DatabaseConnection;
-
-
-beforeAll(() => {
-  databaseConnection = new DatabaseConnectionAdapter(constants.POSTGRES_URL);
-  couponRepository = new CouponRepositoryDatabase(databaseConnection);
-});
-
-afterAll(async () => {
-  await databaseConnection.close();
-});
 
 test('Must validate a valid coupon', async () => {
   const input = {

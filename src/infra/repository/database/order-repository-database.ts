@@ -1,5 +1,4 @@
 import { Order } from '../../../domain/entity/order';
-import OrderItem from '../../../domain/entity/order-item';
 import OrderRepository from '../../../domain/repository/order-repository';
 import DatabaseConnection from '../../database/database-connection';
 
@@ -8,8 +7,8 @@ export default class OrderRepositoryDatabase implements OrderRepository {
   }
 
   async save(order: Order): Promise<void> {
-    await this.databaseConnection.query(`INSERT INTO "order" (code, client_cpf, total, created_at) VALUES ($1, $2, $3, $4)`,
-      [order.getCode(), order.getClientCpf(), order.getTotal(), order.issueDate]);
+    await this.databaseConnection.query(`INSERT INTO "order" (code, client_cpf, total, created_at, shipping_cost) VALUES ($1, $2, $3, $4, $5)`,
+      [order.getCode(), order.getClientCpf(), order.getTotal(), order.issueDate, order.getShippingCost()]);
 
     const [{ id }] = await this.databaseConnection.query('select id from "order" where code = $1', [order.getCode()]);
 
