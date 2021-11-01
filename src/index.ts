@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import { orderRouter } from './application/web/routers/order.router';
 import { shippingRouter } from './application/web/routers/shipping.router';
 import { couponRouter } from './application/web/routers/coupon.router';
+import Logger from './application/logger/logger';
 
 
 dotenv.config();
@@ -17,8 +18,7 @@ app.use('/order', orderRouter);
 app.use('/shipping', shippingRouter);
 
 const port = 8080;
-// start the express server
 app.listen(port, () => {
-  // tslint:disable-next-line:no-console
-  console.log(`server started at http://localhost:${port}`);
+  const logger = Logger.get();
+  logger.info(`server started at http://localhost:${port}`);
 });
